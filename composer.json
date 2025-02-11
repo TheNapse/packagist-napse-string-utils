@@ -1,0 +1,21 @@
+{
+  "name": "napse/string-utils",
+  "description": "A String Helper Utility",
+  "type": "library",
+  "license": "Apache-2.0",
+  "autoload": {
+    "psr-4": {
+      "Napse\\StringUtils\\": "src/"
+    }
+  },
+  "authors": [
+    {
+      "name": "Steffen Schmitt",
+      "email": "steffen@napse.io"
+    }
+  ],
+  "require-dev": {
+    "phpunit/phpunit": "^12.0",
+    "phpstan/phpstan": "^2.1"
+  }
+}
