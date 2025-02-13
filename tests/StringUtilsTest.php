@@ -5,12 +5,9 @@ namespace Napse\StringUtils\Tests;
 use Napse\StringUtils\StringUtils;
 use PHPUnit\Framework\TestCase;
 
-/**
- * @covers \Napse\StringUtils\StringUtils
- */
 class StringUtilsTest extends TestCase
 {
-    private const TEST_CASES = [
+    private const array TEST_CASES = [
         'Hello World!' => [
             'flat' => 'helloworld',
             'kebab' => 'hello-world',
@@ -40,11 +37,6 @@ class StringUtilsTest extends TestCase
         ]
     ];
 
-    /**
-     * @return void
-     * @test ASD
-     * @testdox QWE
-     */
     public function testStringTransformationsTest()
     {
         foreach (self::TEST_CASES as $input => $expected) {
