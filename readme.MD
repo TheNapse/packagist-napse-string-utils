@@ -163,6 +163,34 @@ $newVersion = $version->withBuildMetadata('build567');
 echo $newVersion; // 1.0.0+build567
 ```
 
+#### Comparing Versions
+
+```php
+$version1 = new Version(1, 2, 3);
+$version2 = new Version(1, 2, 4);
+
+echo $version1->compare($version2); // -1
+
+$version2 = new Version(1, 3, 0);
+
+echo $version1->compare($version2); // 1
+
+$version2 = new Version(2, 0, 0);
+
+echo $version1->compare($version2); // 0
+```
+
+#### Emojis
+
+```php
+
+echo \Napse\StringUtils\Emoji::CHECKMARK_NOK;
+// Output: ❌
+
+echo \Napse\StringUtils\Emoji::CHECKMARK_OK;
+// Output: ✅
+```
+
 ## Running Tests
 
 Ensure PHPUnit is installed:

@@ -81,6 +81,17 @@ final class Version
         return new self($this->major, $this->minor, $this->patch + 1);
     }
 
+    /**
+     * @param Version $versionB
+     * @return int -1 if $this < $versionB, 0 if $this == $versionB, 1 if $this > $versionB
+     */
+    public function compare(Version $versionB): int
+    {
+        return $this->major <=> $versionB->major
+            ?: $this->minor <=> $versionB->minor
+                ?: $this->patch <=> $versionB->patch;
+    }
+
     public function __toString(): string
     {
         $version = "{$this->major}.{$this->minor}.{$this->patch}";
@@ -104,9 +115,9 @@ final class Version
         }
 
         return new self(
-            (int) $matches[1],
-            (int) $matches[2],
-            isset($matches[3]) ? (int) $matches[3] : 0,
+            (int)$matches[1],
+            (int)$matches[2],
+            isset($matches[3]) ? (int)$matches[3] : 0,
             $matches[4] ?? null,
             $matches[5] ?? null
         );

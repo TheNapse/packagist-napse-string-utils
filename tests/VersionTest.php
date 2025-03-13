@@ -56,4 +56,14 @@ final class VersionTest extends TestCase
         $this->assertSame('1.3.0', (string)$version->incrementMinor());
         $this->assertSame('1.2.4', (string)$version->incrementPatch());
     }
+
+    public function testCompareTo(): void
+    {
+        $versionA = new Version(1, 2, 3);
+        $versionB = new Version(1, 2, 4);
+
+        var_dump($versionA->compare($versionB));
+        $this->assertSame(-1, $versionA->compare($versionB));
+        $this->assertSame(1, $versionB->compare($versionA));
+    }
 }
