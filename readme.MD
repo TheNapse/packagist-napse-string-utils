@@ -100,10 +100,88 @@ echo StringUtils::toCobolCase('Hello World! 123');
 // Output: HELLO-WORLD-123
 ```
 
-### Contributing
+### Version Class
 
-Feel free to fork the repository, create a feature branch for your changes, and submit a PR.
+The `Version` class allows easy management of semantic versions and provides methods for modifying and validating versions.
 
-### License
+#### Creating a Version
 
-This project is licensed under the Apache-2.0 License.
+```php
+use Napse\StringUtils\Version;
+
+$version = new Version(1, 2, 3, 'beta', 'build123');
+echo $version; // 1.2.3-beta+build123
+```
+
+#### Creating a Version from a String
+
+```php
+$version = Version::fromString('2.1.0-beta+exp.sha.5114f85');
+echo $version; // 2.1.0-beta+exp.sha.5114f85
+```
+
+#### Getting Version Components
+
+```php
+$version = new Version(1, 2, 3, 'alpha', 'build123');
+
+echo $version->getMajor(); // 1
+echo $version->getMinor(); // 2
+echo $version->getPatch(); // 3
+echo $version->getPreRelease(); // alpha
+echo $version->getBuildMetadata(); // build123
+```
+
+#### Incrementing the Version
+
+```php
+$version = new Version(1, 2, 3);
+
+echo $version->incrementMajor(); // 2.0.0
+echo $version->incrementMinor(); // 1.3.0
+echo $version->incrementPatch(); // 1.2.4
+```
+
+#### Modifying the Version
+
+```php
+$version = new Version(1, 0, 0);
+
+$newVersion = $version->withMajor(2);
+echo $newVersion; // 2.0.0
+
+$newVersion = $version->withMinor(5);
+echo $newVersion; // 1.5.0
+
+$newVersion = $version->withPatch(9);
+echo $newVersion; // 1.0.9
+
+$newVersion = $version->withPreRelease('rc1');
+echo $newVersion; // 1.0.0-rc1
+
+$newVersion = $version->withBuildMetadata('build567');
+echo $newVersion; // 1.0.0+build567
+```
+
+## Running Tests
+
+Ensure PHPUnit is installed:
+
+```sh
+composer require --dev phpunit/phpunit
+```
+
+Run the tests using:
+
+```sh
+vendor/bin/phpunit
+```
+
+## Contributing
+
+Contributions are welcome! Please open an issue or submit a pull request on GitHub.
+
+## License
+
+This package is licensed under the MIT License.
+
