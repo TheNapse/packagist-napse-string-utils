@@ -110,7 +110,15 @@ final class Version
     public static function fromString(string $version): self
     {
         $pattern = '/^(0|[1-9]\d*)\.(0|[1-9]\d*)(?:\.(0|[1-9]\d*))?(?:-([\da-zA-Z.-]+))?(?:\+([\da-zA-Z.-]+))?$/';
+
         if (!preg_match($pattern, $version, $matches)) {
+
+            if (is_numeric($version)) {
+                return new self(
+                    (int)$version
+                );
+            }
+
             throw new \InvalidArgumentException("Invalid version format: {$version}");
         }
 
