@@ -16,7 +16,7 @@ Requires **PHP 8.2** or higher.
 
 ## StringUtils
 
-Converts strings between 7 casing formats:
+Converts strings between 12 casing formats:
 
 | Method | Example Output |
 |---|---|
@@ -27,12 +27,20 @@ Converts strings between 7 casing formats:
 | `toSnakeCase('Hello World!')` | `hello_world` |
 | `toConstantCase('Hello World!')` | `HELLO_WORLD` |
 | `toCobolCase('Hello World!')` | `HELLO-WORLD` |
+| `toTitleCase('Hello World!')` | `Hello World` |
+| `toDotCase('Hello World!')` | `hello.world` |
+| `toTrainCase('Hello World!')` | `Hello-World` |
+| `toSlug('Café & Co!')` | `cafe-co` |
+| `toAcronym('Hello World!')` | `HW` |
 
 ```php
 use Napse\StringUtils\StringUtils;
 
 echo StringUtils::toKebabCase('Hello World! 123');
 // Output: hello-world-123
+
+echo StringUtils::toSlug('Über uns! 🎉');
+// Output: uber-uns
 ```
 
 ## Version
@@ -96,6 +104,32 @@ $v2->compare($v1); //  1 ($v2 > $v1)
 
 $v3 = new Version(1, 2, 3);
 $v1->compare($v3); //  0 ($v1 == $v3)
+```
+
+Pre-release versions have lower precedence than the associated normal version (SemVer §11):
+
+```php
+$alpha = Version::fromString('1.0.0-alpha');
+$stable = new Version(1, 0, 0);
+
+$alpha->compare($stable); // -1 (alpha < stable)
+```
+
+### Convenience Methods
+
+```php
+$v1 = new Version(1, 0, 0);
+$v2 = new Version(2, 0, 0);
+
+$v1->equals($v2);              // false
+$v1->lessThan($v2);            // true
+$v1->greaterThan($v2);         // false
+$v1->lessThanOrEqual($v2);     // true
+$v1->greaterThanOrEqual($v2);  // false
+$v1->isStable();               // true
+
+$beta = new Version(1, 0, 0, 'beta');
+$beta->isStable();             // false
 ```
 
 ## Emoji
