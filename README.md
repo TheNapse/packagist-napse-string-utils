@@ -134,16 +134,27 @@ $beta->isStable();             // false
 
 ## Emoji
 
-Common emoji constants for CLI output and formatting.
+Terminal-friendly emoji constants for CLI output.
+
+| Constant | Emoji | Purpose |
+|---|---|---|
+| `CHECKMARK_OK` | ✅ | Success |
+| `CHECKMARK_NOK` | ❌ | Failure |
+| `WARNING` | ⚠️ | Warnings |
+| `INFO` | ℹ️ | Info messages |
+| `ARROW_RIGHT` | ➜ | Lists, steps |
+| `ROCKET` | 🚀 | Start/Deploy |
+| `HOURGLASS` | ⏳ | In progress |
+| `LOCK` | 🔒 | Security/Auth |
+| `GEAR` | ⚙️ | Configuration |
+| `SPARKLE` | ✨ | Success/New |
 
 ```php
 use Napse\StringUtils\Emoji;
 
-echo Emoji::CHECKMARK_OK;  // ✅
-echo Emoji::CHECKMARK_NOK; // ❌
-echo Emoji::HEART;         // ❤️
-echo Emoji::EYES;          // 👀
-echo Emoji::GRINNING;      // 😀
+echo Emoji::CHECKMARK_OK . ' All tests passed';  // ✅ All tests passed
+echo Emoji::WARNING . ' Config missing';          // ⚠️ Config missing
+echo Emoji::ROCKET . ' Deploying...';             // 🚀 Deploying...
 ```
 
 ## Testing
