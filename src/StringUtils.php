@@ -63,4 +63,59 @@ final class StringUtils
 
         return rtrim(strtoupper($hyphenated ?? ''), '-');
     }
+
+    public static function toTitleCase(string $string): string
+    {
+        $words = array_filter(
+            preg_split(self::REGEX_NON_ALPHANUMERIC, strtolower($string)) ?: [],
+            static fn (string $w): bool => $w !== ''
+        );
+
+        return implode(' ', array_map('ucfirst', $words));
+    }
+
+    public static function toDotCase(string $string): string
+    {
+        $dotted = preg_replace(self::REGEX_NON_ALPHANUMERIC, '.', trim($string));
+
+        return rtrim(strtolower($dotted ?? ''), '.');
+    }
+
+    public static function toTrainCase(string $string): string
+    {
+        $words = array_filter(
+            preg_split(self::REGEX_NON_ALPHANUMERIC, strtolower($string)) ?: [],
+            static fn (string $w): bool => $w !== ''
+        );
+
+        return implode('-', array_map('ucfirst', $words));
+    }
+
+    public static function toSlug(string $string): string
+    {
+        if (function_exists('transliterator_transliterate')) {
+            $transliterated = transliterator_transliterate('Any-Latin; Latin-ASCII; Lower()', $string);
+            $string = $transliterated !== false ? $transliterated : strtolower($string);
+        } else {
+            $converted = iconv('UTF-8', 'ASCII//TRANSLIT', $string);
+            $string = $converted !== false ? strtolower($converted) : strtolower($string);
+        }
+
+        $slugged = preg_replace(self::REGEX_NON_ALPHANUMERIC, '-', trim($string));
+
+        return trim($slugged ?? '', '-');
+    }
+
+    public static function toAcronym(string $string): string
+    {
+        $words = array_filter(
+            preg_split(self::REGEX_NON_ALPHANUMERIC, $string) ?: [],
+            static fn (string $w): bool => $w !== ''
+        );
+
+        return implode('', array_map(
+            static fn (string $w): string => strtoupper($w[0]),
+            $words
+        ));
+    }
 }
