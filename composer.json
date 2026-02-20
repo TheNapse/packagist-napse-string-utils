@@ -1,12 +1,17 @@
 {
   "name": "napse/string-utils",
-  "description": "A String Helper Utility",
+  "description": "Lightweight string casing conversions and semantic versioning for PHP",
   "type": "library",
-  "license": "Apache-2.0",
-  "version": "1.3.0",
+  "license": "MIT",
+  "keywords": ["string", "utils", "case-conversion", "semver", "version"],
   "autoload": {
     "psr-4": {
       "Napse\\StringUtils\\": "src/"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "Napse\\StringUtils\\Tests\\": "tests/"
     }
   },
   "authors": [
@@ -15,6 +20,9 @@
       "email": "steffen@napse.io"
     }
   ],
+  "require": {
+    "php": ">=8.2"
+  },
   "require-dev": {
     "phpunit/phpunit": "^12.0",
     "phpstan/phpstan": "^2.1"
