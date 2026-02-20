@@ -102,4 +102,55 @@ final class StringUtilsTest extends TestCase
         $this->assertSame('already_snake', StringUtils::toSnakeCase('already_snake'));
         $this->assertSame('alreadyflat', StringUtils::toFlatCase('alreadyflat'));
     }
+
+    public function testTitleCase(): void
+    {
+        $this->assertSame('Hello World', StringUtils::toTitleCase('Hello World!'));
+        $this->assertSame('Php Unit Testing', StringUtils::toTitleCase('PHP Unit Testing'));
+        $this->assertSame('Snake Case Example', StringUtils::toTitleCase('snake_case_example'));
+        $this->assertSame('', StringUtils::toTitleCase(''));
+        $this->assertSame('123', StringUtils::toTitleCase('123'));
+        $this->assertSame('', StringUtils::toTitleCase('!@#$'));
+    }
+
+    public function testDotCase(): void
+    {
+        $this->assertSame('hello.world', StringUtils::toDotCase('Hello World!'));
+        $this->assertSame('php.unit.testing', StringUtils::toDotCase('PHP Unit Testing'));
+        $this->assertSame('snake.case.example', StringUtils::toDotCase('snake_case_example'));
+        $this->assertSame('', StringUtils::toDotCase(''));
+        $this->assertSame('123', StringUtils::toDotCase('123'));
+        $this->assertSame('', StringUtils::toDotCase('!@#$'));
+    }
+
+    public function testTrainCase(): void
+    {
+        $this->assertSame('Hello-World', StringUtils::toTrainCase('Hello World!'));
+        $this->assertSame('Php-Unit-Testing', StringUtils::toTrainCase('PHP Unit Testing'));
+        $this->assertSame('Snake-Case-Example', StringUtils::toTrainCase('snake_case_example'));
+        $this->assertSame('', StringUtils::toTrainCase(''));
+        $this->assertSame('123', StringUtils::toTrainCase('123'));
+        $this->assertSame('', StringUtils::toTrainCase('!@#$'));
+    }
+
+    public function testSlug(): void
+    {
+        $this->assertSame('hello-world', StringUtils::toSlug('Hello World!'));
+        $this->assertSame('uber-uns', StringUtils::toSlug('Über uns'));
+        $this->assertSame('cafe', StringUtils::toSlug('Café'));
+        $this->assertSame('', StringUtils::toSlug(''));
+        $this->assertSame('123', StringUtils::toSlug('123'));
+        $this->assertSame('', StringUtils::toSlug('!@#$'));
+        $this->assertSame('hello', StringUtils::toSlug('  Hello  '));
+    }
+
+    public function testAcronym(): void
+    {
+        $this->assertSame('HW', StringUtils::toAcronym('Hello World!'));
+        $this->assertSame('PUT', StringUtils::toAcronym('PHP Unit Testing'));
+        $this->assertSame('SCE', StringUtils::toAcronym('snake_case_example'));
+        $this->assertSame('', StringUtils::toAcronym(''));
+        $this->assertSame('1', StringUtils::toAcronym('123'));
+        $this->assertSame('', StringUtils::toAcronym('!@#$'));
+    }
 }
