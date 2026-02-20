@@ -1,138 +1,69 @@
-### Overview
+# napse/string-utils
 
-The `StringUtils` class provides several utility methods for transforming strings into various casing styles. The
-library can be used to convert strings to formats like:
+[![Packagist Version](https://img.shields.io/packagist/v/napse/string-utils)](https://packagist.org/packages/napse/string-utils)
+[![License](https://img.shields.io/packagist/l/napse/string-utils)](LICENSE)
+[![PHP Version](https://img.shields.io/packagist/dependency-v/napse/string-utils/php)](composer.json)
 
-* flatcase
-* kebab-case
-* camelCase
-* PascalCase
-* snake_case
-* CONSTANT_CASE
-* COBOL-CASE
+Lightweight string casing conversions and semantic versioning for PHP.
 
-### Installation
+## Installation
 
-To include the package in your project, you can require it via Composer:
-
-``` bash
+```bash
 composer require napse/string-utils
 ```
 
-### Usage
+Requires **PHP 8.2** or higher.
 
-Below are examples demonstrating how to use each public method of the `StringUtils` class:
+## StringUtils
 
-#### 1. **Flatcase**
+Converts strings between 7 casing formats:
 
-Converts a string to flatcase by removing all non-alphanumeric characters and lowercasing it.
+| Method | Example Output |
+|---|---|
+| `toFlatCase('Hello World!')` | `helloworld` |
+| `toKebabCase('Hello World!')` | `hello-world` |
+| `toCamelCase('Hello World!')` | `helloWorld` |
+| `toPascalCase('Hello World!')` | `HelloWorld` |
+| `toSnakeCase('Hello World!')` | `hello_world` |
+| `toConstantCase('Hello World!')` | `HELLO_WORLD` |
+| `toCobolCase('Hello World!')` | `HELLO-WORLD` |
 
-``` php
+```php
 use Napse\StringUtils\StringUtils;
 
-echo StringUtils::toFlatCase('Hello World! 123'); 
-// Output: helloworld123
-```
-
-#### 2. **Kebab-case**
-
-Converts a string to kebab-case by replacing non-alphanumeric characters with hyphens and lowercasing it.
-
-``` php
-use Napse\StringUtils\StringUtils;
-
-echo StringUtils::toKebabCase('Hello World! 123'); 
+echo StringUtils::toKebabCase('Hello World! 123');
 // Output: hello-world-123
 ```
 
-#### 3. **CamelCase**
+## Version
 
-Converts a string to camelCase format.
+Immutable semantic versioning value object with parsing, comparison, and modification.
 
-``` php
-use Napse\StringUtils\StringUtils;
-
-echo StringUtils::toCamelCase('Hello World! 123'); 
-// Output: helloWorld123
-```
-
-#### 4. **PascalCase**
-
-Converts a string to PascalCase format.
-
-``` php
-use Napse\StringUtils\StringUtils;
-
-echo StringUtils::toPascalCase('Hello World! 123'); 
-// Output: HelloWorld123
-```
-
-#### 5. **Snake_case**
-
-Converts a string to snake_case format.
-
-``` php
-use Napse\StringUtils\StringUtils;
-
-echo StringUtils::toSnakeCase('Hello World! 123'); 
-// Output: hello_world_123
-```
-
-#### 6. **CONSTANT_CASE**
-
-Converts a string to CONSTANT_CASE format (uppercase snake_case).
-
-``` php
-use Napse\StringUtils\StringUtils;
-
-echo StringUtils::toConstantCase('Hello World! 123'); 
-// Output: HELLO_WORLD_123
-```
-
-#### 7. **COBOL-CASE**
-
-Converts a string to COBOL-CASE format (uppercase kebab-case).
-
-``` php
-use Napse\StringUtils\StringUtils;
-
-echo StringUtils::toCobolCase('Hello World! 123'); 
-// Output: HELLO-WORLD-123
-```
-
-### Version Class
-
-The `Version` class allows easy management of semantic versions and provides methods for modifying and validating versions.
-
-#### Creating a Version
+### Creating Versions
 
 ```php
 use Napse\StringUtils\Version;
 
 $version = new Version(1, 2, 3, 'beta', 'build123');
 echo $version; // 1.2.3-beta+build123
-```
 
-#### Creating a Version from a String
-
-```php
 $version = Version::fromString('2.1.0-beta+exp.sha.5114f85');
 echo $version; // 2.1.0-beta+exp.sha.5114f85
 ```
 
-#### Getting Version Components
+### Accessing Components
 
 ```php
 $version = new Version(1, 2, 3, 'alpha', 'build123');
 
-echo $version->getMajor(); // 1
-echo $version->getMinor(); // 2
-echo $version->getPatch(); // 3
-echo $version->getPreRelease(); // alpha
-echo $version->getBuildMetadata(); // build123
+$version->getMajor();         // 1
+$version->getMinor();         // 2
+$version->getPatch();         // 3
+$version->getPreRelease();    // "alpha"
+$version->getBuildMetadata(); // "build123"
 ```
 
-#### Incrementing the Version
+### Incrementing
 
 ```php
 $version = new Version(1, 2, 3);
@@ -142,67 +73,57 @@ echo $version->incrementMinor(); // 1.3.0
 echo $version->incrementPatch(); // 1.2.4
 ```
 
-#### Modifying the Version
+### Immutable Modifications
 
 ```php
 $version = new Version(1, 0, 0);
 
-$newVersion = $version->withMajor(2);
-echo $newVersion; // 2.0.0
-
-$newVersion = $version->withMinor(5);
-echo $newVersion; // 1.5.0
-
-$newVersion = $version->withPatch(9);
-echo $newVersion; // 1.0.9
-
-$newVersion = $version->withPreRelease('rc1');
-echo $newVersion; // 1.0.0-rc1
-
-$newVersion = $version->withBuildMetadata('build567');
-echo $newVersion; // 1.0.0+build567
+echo $version->withMajor(2);              // 2.0.0
+echo $version->withMinor(5);              // 1.5.0
+echo $version->withPatch(9);              // 1.0.9
+echo $version->withPreRelease('rc1');     // 1.0.0-rc1
+echo $version->withBuildMetadata('b567'); // 1.0.0+b567
 ```
 
-#### Comparing Versions
+### Comparing
 
 ```php
-$version1 = new Version(1, 2, 3);
-$version2 = new Version(1, 2, 4);
+$v1 = new Version(1, 2, 3);
+$v2 = new Version(1, 2, 4);
 
-echo $version1->compare($version2); // -1
+$v1->compare($v2); // -1 ($v1 < $v2)
+$v2->compare($v1); //  1 ($v2 > $v1)
 
-$version2 = new Version(1, 3, 0);
-
-echo $version1->compare($version2); // 1
-
-$version2 = new Version(2, 0, 0);
-
-echo $version1->compare($version2); // 0
+$v3 = new Version(1, 2, 3);
+$v1->compare($v3); //  0 ($v1 == $v3)
 ```
 
-#### Emojis
+## Emoji
+
+Common emoji constants for CLI output and formatting.
 
 ```php
+use Napse\StringUtils\Emoji;
 
-echo \Napse\StringUtils\Emoji::CHECKMARK_NOK;
-// Output: ❌
-
-echo \Napse\StringUtils\Emoji::CHECKMARK_OK;
-// Output: ✅
+echo Emoji::CHECKMARK_OK;  // ✅
+echo Emoji::CHECKMARK_NOK; // ❌
+echo Emoji::HEART;         // ❤️
+echo Emoji::EYES;          // 👀
+echo Emoji::GRINNING;      // 😀
 ```
 
-## Running Tests
+## Testing
 
-Ensure PHPUnit is installed:
-
-```sh
+```bash
 composer require --dev phpunit/phpunit
+vendor/bin/phpunit
 ```
 
-Run the tests using:
+## Static Analysis
 
-```sh
-vendor/bin/phpunit
+```bash
+composer require --dev phpstan/phpstan
+vendor/bin/phpstan analyse
 ```
 
 ## Contributing
@@ -211,5 +132,4 @@ Contributions are welcome! Please open an issue or submit a pull request on GitH
 
 ## License
 
-This package is licensed under the MIT License.
-
+This package is licensed under the [MIT License](LICENSE).
