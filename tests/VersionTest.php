@@ -144,4 +144,106 @@ final class VersionTest extends TestCase
 
         $this->assertSame(-1, $v1->compare($v2));
     }
+
+    public function testComparePreRelease(): void
+    {
+        $alpha = Version::fromString('1.0.0-alpha');
+        $beta = Version::fromString('1.0.0-beta');
+        $rc = Version::fromString('1.0.0-rc.1');
+        $stable = new Version(1, 0, 0);
+
+        $this->assertSame(-1, $alpha->compare($beta));
+        $this->assertSame(-1, $beta->compare($rc));
+        $this->assertSame(-1, $rc->compare($stable));
+        $this->assertSame(-1, $alpha->compare($stable));
+        $this->assertSame(1, $stable->compare($alpha));
+    }
+
+    public function testComparePreReleaseNumeric(): void
+    {
+        $rc1 = Version::fromString('1.0.0-rc.1');
+        $rc2 = Version::fromString('1.0.0-rc.2');
+        $rc10 = Version::fromString('1.0.0-rc.10');
+
+        $this->assertSame(-1, $rc1->compare($rc2));
+        $this->assertSame(-1, $rc2->compare($rc10));
+    }
+
+    public function testComparePreReleaseLongerHasHigherPrecedence(): void
+    {
+        $a = Version::fromString('1.0.0-alpha');
+        $a1 = Version::fromString('1.0.0-alpha.1');
+
+        $this->assertSame(-1, $a->compare($a1));
+        $this->assertSame(1, $a1->compare($a));
+    }
+
+    public function testComparePreReleaseBothNull(): void
+    {
+        $v1 = new Version(1, 0, 0);
+        $v2 = new Version(1, 0, 0);
+
+        $this->assertSame(0, $v1->compare($v2));
+    }
+
+    public function testEquals(): void
+    {
+        $v1 = new Version(1, 2, 3);
+        $v2 = new Version(1, 2, 3);
+        $v3 = new Version(1, 2, 4);
+
+        $this->assertTrue($v1->equals($v2));
+        $this->assertFalse($v1->equals($v3));
+    }
+
+    public function testGreaterThan(): void
+    {
+        $v1 = new Version(2, 0, 0);
+        $v2 = new Version(1, 0, 0);
+
+        $this->assertTrue($v1->greaterThan($v2));
+        $this->assertFalse($v2->greaterThan($v1));
+        $this->assertFalse($v1->greaterThan($v1));
+    }
+
+    public function testLessThan(): void
+    {
+        $v1 = new Version(1, 0, 0);
+        $v2 = new Version(2, 0, 0);
+
+        $this->assertTrue($v1->lessThan($v2));
+        $this->assertFalse($v2->lessThan($v1));
+        $this->assertFalse($v1->lessThan($v1));
+    }
+
+    public function testGreaterThanOrEqual(): void
+    {
+        $v1 = new Version(2, 0, 0);
+        $v2 = new Version(1, 0, 0);
+        $v3 = new Version(2, 0, 0);
+
+        $this->assertTrue($v1->greaterThanOrEqual($v2));
+        $this->assertTrue($v1->greaterThanOrEqual($v3));
+        $this->assertFalse($v2->greaterThanOrEqual($v1));
+    }
+
+    public function testLessThanOrEqual(): void
+    {
+        $v1 = new Version(1, 0, 0);
+        $v2 = new Version(2, 0, 0);
+        $v3 = new Version(1, 0, 0);
+
+        $this->assertTrue($v1->lessThanOrEqual($v2));
+        $this->assertTrue($v1->lessThanOrEqual($v3));
+        $this->assertFalse($v2->lessThanOrEqual($v1));
+    }
+
+    public function testIsStable(): void
+    {
+        $stable = new Version(1, 0, 0);
+        $preRelease = new Version(1, 0, 0, 'beta');
+
+        $this->assertTrue($stable->isStable());
+        $this->assertFalse($preRelease->isStable());
+    }
 }
