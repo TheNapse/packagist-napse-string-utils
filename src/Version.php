@@ -88,9 +88,92 @@ final class Version
      */
     public function compare(Version $versionB): int
     {
-        return $this->major <=> $versionB->major
+        $result = $this->major <=> $versionB->major
             ?: $this->minor <=> $versionB->minor
                 ?: $this->patch <=> $versionB->patch;
+
+        if ($result !== 0) {
+            return $result;
+        }
+
+        return $this->comparePreRelease($this->preRelease, $versionB->preRelease);
+    }
+
+    public function equals(self $other): bool
+    {
+        return $this->compare($other) === 0;
+    }
+
+    public function greaterThan(self $other): bool
+    {
+        return $this->compare($other) > 0;
+    }
+
+    public function lessThan(self $other): bool
+    {
+        return $this->compare($other) < 0;
+    }
+
+    public function greaterThanOrEqual(self $other): bool
+    {
+        return $this->compare($other) >= 0;
+    }
+
+    public function lessThanOrEqual(self $other): bool
+    {
+        return $this->compare($other) <= 0;
+    }
+
+    public function isStable(): bool
+    {
+        return $this->preRelease === null;
+    }
+
+    private function comparePreRelease(?string $a, ?string $b): int
+    {
+        if ($a === null && $b === null) {
+            return 0;
+        }
+
+        if ($a === null) {
+            return 1;
+        }
+
+        if ($b === null) {
+            return -1;
+        }
+
+        $partsA = explode('.', $a);
+        $partsB = explode('.', $b);
+        $count = max(count($partsA), count($partsB));
+
+        for ($i = 0; $i < $count; $i++) {
+            if (!isset($partsA[$i])) {
+                return -1;
+            }
+            if (!isset($partsB[$i])) {
+                return 1;
+            }
+
+            $isNumA = ctype_digit($partsA[$i]);
+            $isNumB = ctype_digit($partsB[$i]);
+
+            if ($isNumA && $isNumB) {
+                $cmp = (int) $partsA[$i] <=> (int) $partsB[$i];
+            } elseif ($isNumA) {
+                $cmp = -1;
+            } elseif ($isNumB) {
+                $cmp = 1;
+            } else {
+                $cmp = strcmp($partsA[$i], $partsB[$i]);
+            }
+
+            if ($cmp !== 0) {
+                return $cmp < 0 ? -1 : 1;
+            }
+        }
+
+        return 0;
     }
 
     public function __toString(): string
