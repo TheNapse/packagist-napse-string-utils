@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 namespace Napse\StringUtils;
+
 final class Version
 {
     public function __construct(

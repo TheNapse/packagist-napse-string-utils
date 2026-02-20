@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Napse\StringUtils;
 
-class Emoji
+final class Emoji
 {
     public const HEART = '❤️';
     public const EYES = '👀';
